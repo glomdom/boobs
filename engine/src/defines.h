@@ -38,9 +38,9 @@ STATIC_ASSERT(sizeof(f64) == 8, "boobs expected f64 to be 8 bytes.");
 #define TRUE 1
 #define FALSE 0
 
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) 
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
+#   define BOOBS_PLATFORM_WINDOWS 1
 #   ifndef _WIN64
-#       define BOOBS_PLATFORM_WINDOWS 1
 #       error "64-bit is required on Windows!"
 #   endif
 #elif defined(__linux__) || defined(__gnu_linux__)
