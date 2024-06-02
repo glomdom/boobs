@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "logger.h": "c",
+        "system_error": "cpp",
+        "windows.h": "c",
+        "windowsx.h": "c",
+        "platform.h": "c",
+        "defines.h": "c"
+    }
+}
