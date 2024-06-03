@@ -6,7 +6,7 @@ for /r %%f in (*.c) do (
     set cfiles=!cfiles! %%f
 )
 
-set assembly=engine
+set assembly=boobs
 set cflags=-g -shared -Wvarargs -Wall -Werror
 set iflags=-Isrc -I%VULKAN_SDK%/Lib
 set ldflags=-luser32 -lvulkan-1 -L%VULKAN_SDK%/Lib
