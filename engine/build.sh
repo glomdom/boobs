@@ -2,7 +2,7 @@ set echo off
 
 cfiles=$(find . -type f -name "*.c")
 
-assembly="engine"
+assembly="boobs"
 cflags="-g -shared -fdeclspec -fPIC"
 iflags="-Isrc -I$VULKAN_SDK/include"
 ldflags="-lvulkan -lxcb -lX11 -lX11-xcb -lxkbcommon -L$VULKAN_SDK/lib -L/usr/X11R6/lib"

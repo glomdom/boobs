@@ -5,6 +5,8 @@
         "windows.h": "c",
         "windowsx.h": "c",
         "platform.h": "c",
-        "defines.h": "c"
+        "defines.h": "c",
+        "iosfwd": "c",
+        "xlocbuf": "c"
     }
 }
