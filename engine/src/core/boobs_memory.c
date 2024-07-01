@@ -1,4 +1,5 @@
 #include "core/boobs_memory.h"
+#include "core/boobs_string.h"
 
 #include "core/logger.h"
 #include "platform/platform.h"
@@ -111,7 +112,7 @@ char* get_memory_usage_str() {
         offset += length;
     }
 
-    char* out_string = _strdup(buffer);
+    char* out_string = string_duplicate(buffer);
 
     return out_string;
 }

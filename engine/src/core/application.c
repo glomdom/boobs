@@ -95,6 +95,8 @@ b8 application_run() {
 
                 break;
             }
+
+            input_update(0);
         }
     }
 
