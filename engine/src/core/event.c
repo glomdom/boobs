@@ -33,7 +33,7 @@ b8 event_initialize() {
 
     is_initialized = TRUE;
 
-    BOOBS_TRACE("initialized events");
+    BOOBS_INFO("event subsystem initialized");
 
     return TRUE;
 }

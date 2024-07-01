@@ -35,7 +35,8 @@ static struct memory_stats stats;
 
 void initialize_memory() {
     platform_zero_memory(&stats, sizeof(stats));
-    BOOBS_TRACE("initialized memory subsystem");
+    
+    BOOBS_INFO("memory subsystem initialized");
 }
 
 void shutdown_memory() {}
