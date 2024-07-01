@@ -70,6 +70,8 @@ b8 event_register(u16 code, void* listener, PFN_on_event on_event) {
 
     darray_push(state.registered[code].events, event);
 
+    BOOBS_INFO("registered event with code 0x%x", code);
+
     return TRUE;
 }
 
@@ -89,10 +91,12 @@ b8 event_unregister(u16 code, void* listener, PFN_on_event on_event) {
             registered_event popped_event;
 
             darray_pop_at(state.registered[code].events, i, &popped_event);
-            
+
             return TRUE;
         }
     }
+
+    BOOBS_INFO("unregistered event with code 0x%x", code);
 
     return FALSE;
 }
