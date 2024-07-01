@@ -9,7 +9,7 @@ for /r %%f in (*.c) do (
 set assembly=testbed
 set cflags=-g 
 set iflags=-Isrc -I../engine/src/
-set ldflags=-L../bin/ -lengine.lib
+set ldflags=-L../bin/ -lboobs.lib
 set defines=-D_DEBUG -DBOOBS_IMPORT
 
 echo   building %assembly%
