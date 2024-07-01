@@ -91,12 +91,12 @@ b8 event_unregister(u16 code, void* listener, PFN_on_event on_event) {
             registered_event popped_event;
 
             darray_pop_at(state.registered[code].events, i, &popped_event);
+            BOOBS_INFO("unregistered event with code 0x%x", code);
 
             return TRUE;
         }
     }
 
-    BOOBS_INFO("unregistered event with code 0x%x", code);
 
     return FALSE;
 }
