@@ -129,7 +129,7 @@ void platform_free(void* block, b8 aligned) {
     free(block);
 }
 
-void* platform_zero_copy(void* block, u64 size) {
+void* platform_zero_memory(void* block, u64 size) {
     return memset(block, 0, size);
 }
 
