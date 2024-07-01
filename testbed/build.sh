@@ -5,7 +5,7 @@ cfiles=$(find . -type f -name "*.c")
 assembly="testbed"
 cflags="-g -fdeclspec -fPIC"
 iflags="-Isrc -I../engine/src"
-ldflags=" -lengine -Wl,-rpath,. -L../bin/"
+ldflags=" -lboobs -Wl,-rpath,. -L../bin/"
 defines="-D_DEBUG -DBOOBS_IMPORT"
 
 echo "  building $assembly"
