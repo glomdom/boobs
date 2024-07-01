@@ -93,7 +93,7 @@ b8 platform_startup(platform_state* plat_state, const char* application_name, i3
         strlen("WM_PROTOCOLS"),
         "WM_PROTOCOLS"
     );
-    
+
     xcb_intern_atom_reply_t* wm_delete_reply = xcb_intern_atom_reply(
         state->connection,
         wm_delete_cookie,

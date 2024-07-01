@@ -35,7 +35,7 @@ static struct memory_stats stats;
 
 void initialize_memory() {
     platform_zero_memory(&stats, sizeof(stats));
-    
+
     BOOBS_INFO("memory subsystem initialized");
 }
 
@@ -52,7 +52,7 @@ void* boobs_allocate(u64 size, memory_tag tag) {
     // TODO: memory alignment
     void* block = platform_allocate(size, FALSE);
     platform_zero_memory(block, size);
-    
+
     return block;
 }
 
