@@ -1,0 +1,19 @@
+{
+    "files.associations": {
+        "boobs_memory.h": "c",
+        "logger.h": "c",
+        "game_types.h": "c",
+        "algorithm": "cpp",
+        "functional": "cpp",
+        "xutility": "cpp",
+        "expected": "cpp",
+        "optional": "cpp",
+        "system_error": "cpp",
+        "type_traits": "cpp",
+        "xlocmon": "cpp",
+        "xtr1common": "cpp",
+        "stdio.h": "c",
+        "platform.h": "c",
+        "darray.h": "c"
+    }
+}
