@@ -40,7 +40,9 @@ void initialize_memory() {
     BOOBS_INFO("memory subsystem initialized");
 }
 
-void shutdown_memory() {}
+void shutdown_memory() {
+    BOOBS_INFO("memory subsystem has shutdown")
+}
 
 void* boobs_allocate(u64 size, memory_tag tag) {
     if (tag == MEMORY_TAG_UNKNOWN) {

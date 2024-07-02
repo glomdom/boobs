@@ -33,6 +33,8 @@ void input_initialize() {
 
 void input_shutdown() {
     initialized = FALSE;
+
+    BOOBS_INFO("input subsystem has shutdown")
 }
 
 void input_update(f64 dt) {
