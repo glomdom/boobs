@@ -59,7 +59,7 @@ b8 vulkan_renderer_backend_initialize(renderer_backend* backend, const char* app
 
     for (u32 i = 0; i < required_validation_layer_count; ++i) {
         BOOBS_INFO("searching for layer %s", required_validation_layer_names[i]);
-        
+
         b8 found = FALSE;
         for (u32 j = 0; j < available_layer_count; ++j) {
             if (strings_equal(required_validation_layer_names[i], available_layers[j].layerName)) {
