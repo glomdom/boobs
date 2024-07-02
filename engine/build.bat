@@ -7,9 +7,9 @@ for /r %%f in (*.c) do (
 )
 
 set assembly=boobs
-set cflags=-g -shared -Wvarargs -Wall -Werror
-set iflags=-Isrc -I%VULKAN_SDK%/Lib
-set ldflags=-luser32 -lvulkan-1 -L%VULKAN_SDK%/Lib
+set cflags=-g -shared -Wvarargs -Wall
+set iflags=-Isrc -I%VULKAN_SDK%\Include
+set ldflags=-luser32 -lvulkan-1 -L%VULKAN_SDK%\Lib
 set defines=-D_DEBUG -DBOOBS_EXPORT -D_CRT_SECURE_NO_WARNINGS
 
 echo   building %assembly%
