@@ -120,7 +120,7 @@ b8 application_run() {
                 break;
             }
 
-            // fixme: make this way more robust cuz this is disgusting 
+            // fixme: make this way more robust cuz this is disgusting
             render_packet packet;
             packet.dt = delta;
 
@@ -133,7 +133,7 @@ b8 application_run() {
 
             if (remaining_seconds > 0) {
                 u64 remaining_ms = (remaining_seconds * 1000);
-                
+
                 b8 limit_frames = FALSE;
                 if (remaining_ms > 0 && limit_frames) {
                     platform_sleep(remaining_ms - 1);
