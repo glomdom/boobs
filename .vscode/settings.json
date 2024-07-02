@@ -15,6 +15,7 @@
         "stdio.h": "c",
         "platform.h": "c",
         "darray.h": "c",
-        "renderer_backend.h": "c"
+        "renderer_backend.h": "c",
+        "array": "c"
     }
 }

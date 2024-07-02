@@ -54,6 +54,8 @@ void* boobs_allocate(u64 size, memory_tag tag) {
     void* block = platform_allocate(size, FALSE);
     platform_zero_memory(block, size);
 
+    BOOBS_TRACE("allocated 0x%x for tag %i", size, tag);
+
     return block;
 }
 
@@ -67,6 +69,8 @@ void boobs_free(void* block, u64 size, memory_tag tag) {
 
     // TODO: memory alignment
     platform_free(block, FALSE);
+
+    BOOBS_TRACE("freed block 0x%x", block);
 }
 
 void* boobs_zero_memory(void* block, u64 size) {
