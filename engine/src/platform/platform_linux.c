@@ -3,12 +3,9 @@
 #if BOOBS_PLATFORM_LINUX
 
 #include "core/logger.h"
-#include "core/event.h"
 #include "core/input.h"
 
 #include "containers/darray.h"
-
-#include "renderer/vulkan/vulkan_types.inl"
 
 #include <xcb/xcb.h>
 #include <X11/keysym.h>
@@ -25,6 +22,7 @@
 
 #define VK_USE_PLATFORM_XCB_KHR
 #include <vulkan/vulkan.h>
+#include "renderer/vulkan/vulkan_types.inl"
 
 #include <stdlib.h>
 #include <stdio.h>
