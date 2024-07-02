@@ -81,3 +81,5 @@ STATIC_ASSERT(sizeof(f64) == 8, "boobs expected f64 to be 8 bytes.");
 #       define BOOBS_API
 #   endif
 #endif
+
+#define BOOBS_CLAMP(value, min, max) (value <= min) ? min : (value >= max) ? max : value;

@@ -1,7 +1,9 @@
+#include "vulkan/vulkan_core.h"
 #include "vulkan_types.inl"
 #include "vulkan_backend.h"
 #include "vulkan_platform.h"
 #include "vulkan_device.h"
+#include "vulkan_swapchain.h"
 
 #include "core/logger.h"
 #include "core/boobs_string.h"
@@ -19,7 +21,11 @@ VKAPI_ATTR VkBool32 VKAPI_CALL vk_debug_callback(
     void* user_data
 );
 
+i32 find_memory_index(u32 type_filter, u32 property_flags);
+
 b8 vulkan_renderer_backend_initialize(renderer_backend* backend, const char* application_name, struct platform_state* plat_state) {
+    context.find_memory_index = find_memory_index;
+
     // todo: custom allocator, use driver defaults atm
     context.allocator = 0;
 
@@ -127,6 +133,13 @@ b8 vulkan_renderer_backend_initialize(renderer_backend* backend, const char* app
 
     BOOBS_INFO("created vulkan device");
 
+    vulkan_swapchain_create(
+        &context,
+        context.framebuffer_width,
+        context.framebuffer_height,
+        &context.swapchain
+    );
+
     BOOBS_INFO("vulkan renderer backend initialized");
 
     return TRUE;
@@ -193,4 +206,19 @@ VKAPI_ATTR VkBool32 VKAPI_CALL vk_debug_callback(
     }
 
     return VK_FALSE;
+}
+
+i32 find_memory_index(u32 type_filter, u32 property_flags) {
+    VkPhysicalDeviceMemoryProperties memory_properties;
+    vkGetPhysicalDeviceMemoryProperties(context.device.physical_device, &memory_properties);
+
+    for (u32 i = 0; i < memory_properties.memoryTypeCount; ++i) {
+        if (type_filter & (1 << i) && (memory_properties.memoryTypes[i].propertyFlags & property_flags) == property_flags) {
+            return i;
+        }
+    }
+
+    BOOBS_WARN("failed to find suitable memory type");
+
+    return -1;
 }
