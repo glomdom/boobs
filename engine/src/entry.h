@@ -24,7 +24,7 @@ int main(void) {
     }
 
     if (!application_create(&game_inst)) {
-        BOOBS_INFO("application failed to create");
+        BOOBS_FATAL("application failed to create");
 
         return 1;
     }
