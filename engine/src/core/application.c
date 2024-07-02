@@ -8,6 +8,8 @@
 #include "core/input.h"
 #include "core/clock.h"
 
+#include "renderer/renderer_frontend.h"
+
 typedef struct application_state {
     game* game_inst;
 
@@ -58,6 +60,12 @@ b8 application_create(game* game_inst) {
         game_inst->app_config.start_pos_x, game_inst->app_config.start_pos_y,
         game_inst->app_config.start_width, game_inst->app_config.start_height)
     ) {
+        return FALSE;
+    }
+
+    if (!renderer_initialize(game_inst->app_config.name, &app_state.platform)) {
+        BOOBS_FATAL("renderer failed to initialize");
+
         return FALSE;
     }
 
@@ -112,6 +120,12 @@ b8 application_run() {
                 break;
             }
 
+            // fixme: make this way more robust cuz this is disgusting 
+            render_packet packet;
+            packet.dt = delta;
+
+            renderer_draw_frame(&packet);
+
             f64 frame_end_time = platform_get_absolute_time();
             f64 frame_elapsed_time = frame_end_time - frame_start_time;
             running_time += frame_elapsed_time;
@@ -141,6 +155,7 @@ b8 application_run() {
     event_unregister(EVENT_CODE_KEY_RELEASED, 0, application_on_key);
     event_shutdown();
     input_shutdown();
+    renderer_shutdown();
 
     platform_shutdown(&app_state.platform);
 
