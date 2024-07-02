@@ -23,9 +23,14 @@ set_target_properties(engine PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
 )
 
-target_link_libraries(engine PRIVATE $ENV{VULKAN_SDK}/Lib/vulkan-1.lib)
-
 target_include_directories(engine PUBLIC src)
-target_include_directories(engine PRIVATE $ENV{VULKAN_SDK}/Include)
+
+if(WIN32)
+    target_include_directories(engine PRIVATE $ENV{VULKAN_SDK}/Include)
+    target_link_libraries(engine PRIVATE $ENV{VULKAN_SDK}/Lib/vulkan-1.lib)
+else()
+    target_include_directories(engine PRIVATE $ENV{VULKAN_SDK}/include)
+    target_link_libraries(engine PRIVATE $ENV{VULKAN_SDK}/lib/libvulkan.so xcb X11 X11-xcb xkbcommon)
+endif()
 
 target_compile_definitions(engine PRIVATE BOOBS_EXPORT _CRT_SECURE_NO_WARNINGS)

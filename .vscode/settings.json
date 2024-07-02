@@ -20,6 +20,7 @@
         "vulkan_types.inl": "c",
         "input.h": "c",
         "defines.h": "c",
-        "vulkan.h": "c"
+        "vulkan.h": "c",
+        "vulkan_xcb.h": "c"
     }
 }
