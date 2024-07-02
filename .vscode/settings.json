@@ -16,6 +16,10 @@
         "platform.h": "c",
         "darray.h": "c",
         "renderer_backend.h": "c",
-        "array": "c"
+        "array": "c",
+        "vulkan_types.inl": "c",
+        "input.h": "c",
+        "defines.h": "c",
+        "vulkan.h": "c"
     }
 }

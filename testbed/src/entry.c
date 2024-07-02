@@ -8,7 +8,7 @@ b8 create_game(game* out_game) {
     out_game->app_config.start_pos_y = 100;
     out_game->app_config.start_width = 1280;
     out_game->app_config.start_height = 720;
-    out_game->app_config.name = "boobs engine test";
+    out_game->app_config.name = "boobs testingationing applicationism";
 
     out_game->update = game_update;
     out_game->render = game_render;

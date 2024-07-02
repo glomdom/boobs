@@ -1,6 +1,7 @@
-#include "vulkan_backend.h"
 #include "vulkan_types.inl"
+#include "vulkan_backend.h"
 #include "vulkan_platform.h"
+#include "vulkan_device.h"
 
 #include "core/logger.h"
 #include "core/boobs_string.h"
@@ -92,11 +93,9 @@ b8 vulkan_renderer_backend_initialize(renderer_backend* backend, const char* app
     create_info.ppEnabledLayerNames = required_validation_layer_names;
 
     VK_CHECK(vkCreateInstance(&create_info, context.allocator, &context.instance))
-    BOOBS_INFO("vulkan instance created");
+    BOOBS_INFO("created vulkan instance");
 
 #   if defined(_DEBUG)
-    BOOBS_INFO("creating vulkan debugger");
-
     u32 log_severity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT |
                        VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT;
 
@@ -109,8 +108,24 @@ b8 vulkan_renderer_backend_initialize(renderer_backend* backend, const char* app
     BOOBS_ASSERT_MSG(func, "failed to create debug messenger");
 
     VK_CHECK(func(context.instance, &debug_create_info, context.allocator, &context.debug_messenger));
-    BOOBS_INFO("vulkan debugger created");
+    BOOBS_INFO("created vulkan debugger");
 #   endif
+
+    if (!platform_create_vulkan_surface(plat_state, &context)) {
+        BOOBS_ERROR("failed to create vulkan surface");
+
+        return FALSE;
+    }
+
+    BOOBS_INFO("created vulkan surface");
+
+    if (!vulkan_device_create(&context)) {
+        BOOBS_ERROR("failed to create vulkan device");
+
+        return FALSE;
+    }
+
+    BOOBS_INFO("created vulkan device");
 
     BOOBS_INFO("vulkan renderer backend initialized");
 
@@ -118,6 +133,17 @@ b8 vulkan_renderer_backend_initialize(renderer_backend* backend, const char* app
 }
 
 void vulkan_renderer_backend_shutdown(renderer_backend* backend) {
+    vulkan_device_destroy(&context);
+    BOOBS_INFO("destroyed vulkan device");
+
+    if (context.surface) {
+        vkDestroySurfaceKHR(context.instance, context.surface, context.allocator);
+
+        context.surface = 0;
+    }
+
+    BOOBS_INFO("destroyed vulkan surface")
+
     if (context.debug_messenger) {
         PFN_vkDestroyDebugUtilsMessengerEXT func = (PFN_vkDestroyDebugUtilsMessengerEXT)vkGetInstanceProcAddr(context.instance, "vkDestroyDebugUtilsMessengerEXT");
         func(context.instance, context.debug_messenger, context.allocator);
