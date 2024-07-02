@@ -215,9 +215,15 @@ void create(vulkan_context* context, u32 width, u32 height, vulkan_swapchain* sw
 void destroy(vulkan_context* context, vulkan_swapchain* swapchain) {
     vulkan_image_destroy(context, &swapchain->depth_attachment);
 
+    BOOBS_INFO("destroyed depth image");
+
     for (u32 i = 0; i < swapchain->image_count; ++i) {
         vkDestroyImageView(context->device.logical_device, swapchain->views[i], context->allocator);
     }
 
+    BOOBS_INFO("destroyed swapchain images")
+
     vkDestroySwapchainKHR(context->device.logical_device, swapchain->handle, context->allocator);
+
+    BOOBS_INFO("destroyed swapchain")
 }
