@@ -46,6 +46,8 @@ void event_shutdown() {
             state.registered[i].events = 0;
         }
     }
+
+    BOOBS_INFO("event subsystem has shutdown")
 }
 
 b8 event_register(u16 code, void* listener, PFN_on_event on_event) {

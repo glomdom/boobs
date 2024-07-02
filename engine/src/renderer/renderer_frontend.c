@@ -26,6 +26,8 @@ b8 renderer_initialize(const char* application_name, struct platform_state* plat
 void renderer_shutdown() {
     backend->shutdown(backend);
     boobs_free(backend, sizeof(renderer_backend), MEMORY_TAG_RENDERER);
+
+    BOOBS_INFO("renderer frontend has shutdown")
 }
 
 b8 renderer_begin_frame(f32 dt) {

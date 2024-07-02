@@ -118,7 +118,15 @@ b8 vulkan_renderer_backend_initialize(renderer_backend* backend, const char* app
 }
 
 void vulkan_renderer_backend_shutdown(renderer_backend* backend) {
+    if (context.debug_messenger) {
+        PFN_vkDestroyDebugUtilsMessengerEXT func = (PFN_vkDestroyDebugUtilsMessengerEXT)vkGetInstanceProcAddr(context.instance, "vkDestroyDebugUtilsMessengerEXT");
+        func(context.instance, context.debug_messenger, context.allocator);
 
+        BOOBS_INFO("destroyed vulkan debugger");
+    }
+
+    vkDestroyInstance(context.instance, context.allocator);
+    BOOBS_INFO("destroyed vulkan instance");
 }
 
 void vulkan_renderer_backend_on_resized(renderer_backend* backend, u16 width, u16 height) {
