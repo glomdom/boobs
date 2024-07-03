@@ -1,4 +1,3 @@
-#include "vulkan/vulkan_core.h"
 #include "vulkan_types.inl"
 #include "vulkan_backend.h"
 #include "vulkan_platform.h"
