@@ -86,8 +86,6 @@ void vulkan_renderpass_destroy(vulkan_context* context, vulkan_renderpass* rende
     if (renderpass && renderpass->handle) {
         vkDestroyRenderPass(context->device.logical_device, renderpass->handle, context->allocator);
         renderpass->handle = 0;
-
-        BOOBS_INFO("destroyed renderpass");
     }
 }
 

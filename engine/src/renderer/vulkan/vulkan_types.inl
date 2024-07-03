@@ -86,6 +86,8 @@ typedef struct vulkan_swapchain {
     VkImageView* views;
 
     vulkan_image depth_attachment;
+
+    vulkan_framebuffer* framebuffers;
 } vulkan_swapchain;
 
 typedef enum vulkan_command_buffer_state {
