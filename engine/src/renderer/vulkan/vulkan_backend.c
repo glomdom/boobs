@@ -4,6 +4,7 @@
 #include "vulkan_platform.h"
 #include "vulkan_device.h"
 #include "vulkan_swapchain.h"
+#include "vulkan_renderpass.h"
 
 #include "core/logger.h"
 #include "core/boobs_string.h"
@@ -141,12 +142,24 @@ b8 vulkan_renderer_backend_initialize(renderer_backend* backend, const char* app
         &context.swapchain
     );
 
+    vulkan_renderpass_create(
+        &context,
+        &context.main_renderpass,
+        0, 0, context.framebuffer_width, context.framebuffer_height,
+        0.0f, 0.0f, 0.2f, 1.0f,
+        1.0f,
+        0
+    );
+
     BOOBS_INFO("vulkan renderer backend initialized");
 
     return TRUE;
 }
 
 void vulkan_renderer_backend_shutdown(renderer_backend* backend) {
+    vulkan_renderpass_destroy(&context, &context.main_renderpass);
+    BOOBS_INFO("destroyed renderpass");
+
     vulkan_swapchain_destroy(&context, &context.swapchain);
 
     vulkan_device_destroy(&context);
