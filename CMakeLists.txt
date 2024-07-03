@@ -7,7 +7,7 @@ set(CMAKE_C_COMPILER clang)
 set(CMAKE_CXX_COMPILER clang++)
 
 if(DEFINED ENV{VULKAN_SDK})
-    message("Found VULKAN_SDK: $ENV{VULKAN_SDK}")
+    message("-- Found VULKAN_SDK: $ENV{VULKAN_SDK}")
 else()
     message(FATAL_ERROR "VULKAN_SDK environment variable not set")
 endif()
