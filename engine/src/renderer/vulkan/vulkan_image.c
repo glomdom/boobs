@@ -1,5 +1,4 @@
 #include "vulkan_image.h"
-#include "vulkan/vulkan_core.h"
 
 #include "core/logger.h"
 
