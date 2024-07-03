@@ -230,6 +230,8 @@ b8 platform_create_vulkan_surface(platform_state* plat_state, vulkan_context* co
 
     context->surface = state->surface;
 
+    BOOBS_INFO("created surface");
+
     return TRUE;
 }
 
