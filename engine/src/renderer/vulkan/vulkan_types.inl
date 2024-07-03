@@ -70,6 +70,13 @@ typedef struct vulkan_renderpass {
     vulkan_render_pass_state state;
 } vulkan_renderpass;
 
+typedef struct vulkan_framebuffer {
+    VkFramebuffer handle;
+    u32 attachment_count;
+    VkImageView* attachments;
+    vulkan_renderpass* renderpass;
+} vulkan_framebuffer;
+
 typedef struct vulkan_swapchain {
     VkSurfaceFormatKHR image_format;
     u8 max_frames_in_flight;
