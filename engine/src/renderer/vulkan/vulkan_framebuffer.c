@@ -48,6 +48,4 @@ void vulkan_framebuffer_destroy(vulkan_context* context, vulkan_framebuffer* fra
     framebuffer->handle = 0;
     framebuffer->attachment_count = 0;
     framebuffer->renderpass = 0;
-
-    BOOBS_INFO("destroyed framebuffer");
 }
