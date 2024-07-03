@@ -16,6 +16,7 @@ add_library(engine SHARED
     src/renderer/vulkan/vulkan_backend.c
     src/renderer/vulkan/vulkan_device.c
     src/renderer/vulkan/vulkan_image.c
+    src/renderer/vulkan/vulkan_renderpass.c
     src/renderer/vulkan/vulkan_swapchain.c
 )
 
