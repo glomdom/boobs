@@ -34,9 +34,9 @@ BOOBS_API void* _darray_insert_at(void* array, u64 index, void* value_ptr);
 
 #define darray_destroy(array) _darray_destroy(array);
 
-#define darray_push(array, value) {         \
-    typeof(value) temp = value;             \
-    array = _darray_push(array, &temp);     \
+#define darray_push(array, value) {             \
+    typeof(value) temp = (value);               \
+    (array) = _darray_push((array), &temp);     \
 }
 
 #define darray_pop(array, value_ptr) _darray_pop(array, value_ptr)

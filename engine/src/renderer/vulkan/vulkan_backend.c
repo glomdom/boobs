@@ -1,16 +1,18 @@
 #include "vulkan_types.inl"
 #include "vulkan_backend.h"
+
+#include <core/boobs_memory.h>
+
 #include "vulkan_platform.h"
 #include "vulkan_device.h"
 #include "vulkan_swapchain.h"
 #include "vulkan_renderpass.h"
+#include "vulkan_command_buffer.h"
 
 #include "core/logger.h"
 #include "core/boobs_string.h"
 
 #include "containers/darray.h"
-
-#include "platform/platform.h"
 
 static vulkan_context context;
 
@@ -22,6 +24,8 @@ VKAPI_ATTR VkBool32 VKAPI_CALL vk_debug_callback(
 );
 
 i32 find_memory_index(u32 type_filter, u32 property_flags);
+
+void create_command_buffers(renderer_backend* backend);
 
 b8 vulkan_renderer_backend_initialize(renderer_backend* backend, const char* application_name, struct platform_state* plat_state) {
     context.find_memory_index = find_memory_index;
@@ -124,15 +128,11 @@ b8 vulkan_renderer_backend_initialize(renderer_backend* backend, const char* app
         return FALSE;
     }
 
-    BOOBS_INFO("created vulkan surface");
-
     if (!vulkan_device_create(&context)) {
         BOOBS_ERROR("failed to create vulkan device");
 
         return FALSE;
     }
-
-    BOOBS_INFO("created vulkan device");
 
     vulkan_swapchain_create(
         &context,
@@ -150,12 +150,30 @@ b8 vulkan_renderer_backend_initialize(renderer_backend* backend, const char* app
         0
     );
 
+    create_command_buffers(backend);
+
     BOOBS_INFO("vulkan renderer backend initialized");
 
     return TRUE;
 }
 
 void vulkan_renderer_backend_shutdown(renderer_backend* backend) {
+    for (u32 i = 0; i < context.swapchain.image_count; ++i) {
+        if (context.graphics_command_buffers[i].handle) {
+            vulkan_command_buffer_free(
+                &context,
+                context.device.graphics_command_pool,
+                &context.graphics_command_buffers[i]
+            );
+
+            context.graphics_command_buffers[i].handle = 0;
+        }
+    }
+
+    darray_destroy(context.graphics_command_buffers);
+    context.graphics_command_buffers = 0;
+    BOOBS_INFO("destroyed command buffers");
+
     vulkan_renderpass_destroy(&context, &context.main_renderpass);
     BOOBS_INFO("destroyed renderpass");
 
@@ -236,4 +254,34 @@ i32 find_memory_index(u32 type_filter, u32 property_flags) {
     BOOBS_WARN("failed to find suitable memory type");
 
     return -1;
+}
+
+void create_command_buffers(renderer_backend* backend) {
+    if (!context.graphics_command_buffers) {
+        context.graphics_command_buffers = darray_reserve(vulkan_command_buffer, context.swapchain.image_count);
+
+        for (u32 i = 0; i < context.swapchain.image_count; ++i) {
+            boobs_zero_memory(&context.graphics_command_buffers[i], sizeof(vulkan_command_buffer));
+        }
+    }
+
+    for (u32 i = 0; i < context.swapchain.image_count; ++i) {
+        if (context.graphics_command_buffers[i].handle) {
+            vulkan_command_buffer_free(
+                &context,
+                context.device.graphics_command_pool,
+                &context.graphics_command_buffers[i]
+            );
+        }
+
+        boobs_zero_memory(&context.graphics_command_buffers[i], sizeof(vulkan_command_buffer));
+        vulkan_command_buffer_allocate(
+            &context,
+            context.device.graphics_command_pool,
+            TRUE,
+            &context.graphics_command_buffers[i]
+        );
+    }
+
+    BOOBS_INFO("created command buffers");
 }

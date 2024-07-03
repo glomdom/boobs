@@ -1,5 +1,6 @@
 #include "vulkan_renderpass.h"
 
+#include "core/logger.h"
 #include "core/boobs_memory.h"
 
 void vulkan_renderpass_create(
@@ -84,8 +85,9 @@ void vulkan_renderpass_create(
 void vulkan_renderpass_destroy(vulkan_context* context, vulkan_renderpass* renderpass) {
     if (renderpass && renderpass->handle) {
         vkDestroyRenderPass(context->device.logical_device, renderpass->handle, context->allocator);
-
         renderpass->handle = 0;
+
+        BOOBS_INFO("destroyed renderpass");
     }
 }
 

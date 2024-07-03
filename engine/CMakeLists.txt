@@ -14,6 +14,7 @@ add_library(engine SHARED
     src/renderer/renderer_backend.c
     src/renderer/renderer_frontend.c
     src/renderer/vulkan/vulkan_backend.c
+    src/renderer/vulkan/vulkan_command_buffer.c
     src/renderer/vulkan/vulkan_device.c
     src/renderer/vulkan/vulkan_image.c
     src/renderer/vulkan/vulkan_renderpass.c
