@@ -73,7 +73,7 @@ void vulkan_swapchain_present(
     VkResult result = vkQueuePresentKHR(present_queue, &present_info);
     if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR) {
         vulkan_swapchain_recreate(context, context->framebuffer_width, context->framebuffer_height, swapchain);
-    } else if (result == VK_SUCCESS) {
+    } else if (result != VK_SUCCESS) {
         BOOBS_FATAL("failed to present swap chain image");
     }
 

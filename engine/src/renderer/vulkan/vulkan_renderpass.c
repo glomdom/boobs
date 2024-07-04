@@ -1,6 +1,5 @@
 #include "vulkan_renderpass.h"
 
-#include "core/logger.h"
 #include "core/boobs_memory.h"
 
 void vulkan_renderpass_create(
@@ -11,6 +10,19 @@ void vulkan_renderpass_create(
     f32 depth,
     u32 stencil
 ) {
+    out_renderpass->x = x;
+    out_renderpass->y = y;
+    out_renderpass->w = w;
+    out_renderpass->h = h;
+
+    out_renderpass->r = r;
+    out_renderpass->g = g;
+    out_renderpass->b = b;
+    out_renderpass->a = a;
+
+    out_renderpass->depth = depth;
+    out_renderpass->stencil = stencil;
+
     VkSubpassDescription subpass = {};
     subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
 
@@ -33,6 +45,9 @@ void vulkan_renderpass_create(
     VkAttachmentReference color_attachment_reference;
     color_attachment_reference.attachment = 0;
     color_attachment_reference.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+
+    subpass.colorAttachmentCount = 1;
+    subpass.pColorAttachments = &color_attachment_reference;
 
     VkAttachmentDescription depth_attachment = {};
     depth_attachment.format = context->device.depth_format;
@@ -85,6 +100,7 @@ void vulkan_renderpass_create(
 void vulkan_renderpass_destroy(vulkan_context* context, vulkan_renderpass* renderpass) {
     if (renderpass && renderpass->handle) {
         vkDestroyRenderPass(context->device.logical_device, renderpass->handle, context->allocator);
+
         renderpass->handle = 0;
     }
 }
