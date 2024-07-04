@@ -83,3 +83,11 @@ STATIC_ASSERT(sizeof(f64) == 8, "boobs expected f64 to be 8 bytes.");
 #endif
 
 #define BOOBS_CLAMP(value, min, max) (value <= min) ? min : (value >= max) ? max : value;
+
+#ifdef _MSC_VER
+#   define BOOBS_INLINE __forceinline
+#   define BOOBS_NOINLINE __declspec(noinline)
+#else
+#   define BOOBS_INLINE static inline
+#   define BOOBS_NOINLINE
+#endif
