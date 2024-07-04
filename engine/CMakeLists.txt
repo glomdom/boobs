@@ -21,6 +21,7 @@ add_library(engine SHARED
     src/renderer/vulkan/vulkan_image.c
     src/renderer/vulkan/vulkan_renderpass.c
     src/renderer/vulkan/vulkan_swapchain.c
+    src/renderer/vulkan/vulkan_utils.c
 )
 
 set_target_properties(engine PROPERTIES
