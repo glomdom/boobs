@@ -23,7 +23,7 @@ typedef struct application_state {
     f64 last_time;
 } application_state;
 
-static b8 initialized = FALSE;
+static b8 initialized = false;
 static application_state app_state;
 
 b8 application_on_event(u16 code, void* sender, void* listener_inst, event_context context);
@@ -34,7 +34,7 @@ b8 application_create(game* game_inst) {
     if (initialized) {
         BOOBS_FATAL("application_create called more than once");
 
-        return FALSE;
+        return false;
     }
 
     app_state.game_inst = game_inst;
@@ -42,13 +42,13 @@ b8 application_create(game* game_inst) {
     initialize_logging();
     input_initialize();
 
-    app_state.is_running = TRUE;
-    app_state.is_suspended = FALSE;
+    app_state.is_running = true;
+    app_state.is_suspended = false;
 
     if (!event_initialize()) {
         BOOBS_ERROR("event system failed to initialize. app cannot continue");
 
-        return FALSE;
+        return false;
     }
 
     event_register(EVENT_CODE_APPLICATION_QUIT, 0, application_on_event);
@@ -62,26 +62,26 @@ b8 application_create(game* game_inst) {
         game_inst->app_config.start_pos_x, game_inst->app_config.start_pos_y,
         game_inst->app_config.start_width, game_inst->app_config.start_height)
     ) {
-        return FALSE;
+        return false;
     }
 
     if (!renderer_initialize(game_inst->app_config.name, &app_state.platform)) {
         BOOBS_FATAL("renderer failed to initialize");
 
-        return FALSE;
+        return false;
     }
 
     if (!app_state.game_inst->initialize(app_state.game_inst)) {
         BOOBS_FATAL("game failed to initialize");
 
-        return FALSE;
+        return false;
     }
 
     app_state.game_inst->on_resize(app_state.game_inst, app_state.width, app_state.height);
 
-    initialized = TRUE;
+    initialized = true;
 
-    return TRUE;
+    return true;
 }
 
 b8 application_run() {
@@ -97,7 +97,7 @@ b8 application_run() {
 
     while (app_state.is_running) {
         if (!platform_pump_messages(&app_state.platform)) {
-            app_state.is_running = FALSE;
+            app_state.is_running = false;
         }
 
         if (!app_state.is_suspended) {
@@ -109,7 +109,7 @@ b8 application_run() {
             if (!app_state.game_inst->update(app_state.game_inst, (f32)delta)) {
                 BOOBS_FATAL("game update failed | shutting down");
 
-                app_state.is_running = FALSE;
+                app_state.is_running = false;
 
                 break;
             }
@@ -117,7 +117,7 @@ b8 application_run() {
             if (!app_state.game_inst->render(app_state.game_inst, (f32)delta)) {
                 BOOBS_FATAL("game render failed | shutting down");
 
-                app_state.is_running = FALSE;
+                app_state.is_running = false;
 
                 break;
             }
@@ -136,7 +136,7 @@ b8 application_run() {
             if (remaining_seconds > 0) {
                 u64 remaining_ms = (remaining_seconds * 1000);
 
-                b8 limit_frames = FALSE;
+                b8 limit_frames = false;
                 if (remaining_ms > 0 && limit_frames) {
                     platform_sleep(remaining_ms - 1);
                 }
@@ -150,7 +150,7 @@ b8 application_run() {
         }
     }
 
-    app_state.is_running = FALSE;
+    app_state.is_running = false;
 
     event_unregister(EVENT_CODE_APPLICATION_QUIT, 0, application_on_event);
     event_unregister(EVENT_CODE_KEY_PRESSED, 0, application_on_key);
@@ -161,7 +161,7 @@ b8 application_run() {
 
     platform_shutdown(&app_state.platform);
 
-    return TRUE;
+    return true;
 }
 
 void application_get_framebuffer_size(u32* width, u32* height) {
@@ -173,13 +173,13 @@ b8 application_on_event(u16 code, void* sender, void* listener_inst, event_conte
     switch (code) {
         case EVENT_CODE_APPLICATION_QUIT: {
             BOOBS_INFO("EVENT_CODE_APPLICATION_QUIT recieved");
-            app_state.is_running = FALSE;
+            app_state.is_running = false;
 
-            return TRUE;
+            return true;
         }
     }
 
-    return FALSE;
+    return false;
 }
 
 b8 application_on_key(u16 code, void* sender, void* listener_inst, event_context context) {
@@ -189,7 +189,7 @@ b8 application_on_key(u16 code, void* sender, void* listener_inst, event_context
             event_context data = {};
             event_fire(EVENT_CODE_APPLICATION_QUIT, 0, data);
 
-            return TRUE;
+            return true;
         } else {
             BOOBS_DEBUG("%c pressed", key_code);
         }
@@ -199,7 +199,7 @@ b8 application_on_key(u16 code, void* sender, void* listener_inst, event_context
         BOOBS_DEBUG("%c released", key_code);
     }
 
-    return FALSE;
+    return false;
 }
 
 b8 application_on_resize(u16 code, void* sender, void* listener_inst, event_context context) {
@@ -212,12 +212,12 @@ b8 application_on_resize(u16 code, void* sender, void* listener_inst, event_cont
             app_state.height = height;
 
             if (width == 0 || height == 0) {
-                app_state.is_suspended = TRUE;
+                app_state.is_suspended = true;
 
-                return TRUE;
+                return true;
             } else {
                 if (app_state.is_suspended) {
-                    app_state.is_suspended = FALSE;
+                    app_state.is_suspended = false;
                 }
 
                 app_state.game_inst->on_resize(app_state.game_inst, width, height);
@@ -227,5 +227,5 @@ b8 application_on_resize(u16 code, void* sender, void* listener_inst, event_cont
         }
     }
 
-    return FALSE;
+    return false;
 }

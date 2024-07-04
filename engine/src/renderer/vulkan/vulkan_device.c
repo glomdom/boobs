@@ -38,7 +38,7 @@ b8 vulkan_device_create(vulkan_context* context) {
     if (!select_physical_device(context)) {
         BOOBS_FATAL("failed to select physical device");
 
-        return FALSE;
+        return false;
     }
 
     BOOBS_DEBUG("created vulkan physical device")
@@ -134,7 +134,7 @@ b8 vulkan_device_create(vulkan_context* context) {
 
     BOOBS_DEBUG("created device");
 
-    return TRUE;
+    return true;
 }
 
 void vulkan_device_destroy(vulkan_context* context) {
@@ -244,15 +244,15 @@ b8 vulkan_device_detect_depth_format(vulkan_device* device) {
         if ((properties.linearTilingFeatures & flags) == flags) {
             device->depth_format = candidates[i];
 
-            return TRUE;
+            return true;
         } else if ((properties.optimalTilingFeatures & flags) == flags) {
             device->depth_format = candidates[i];
 
-            return TRUE;
+            return true;
         }
     }
 
-    return FALSE;
+    return false;
 }
 
 b8 select_physical_device(vulkan_context* context) {
@@ -262,7 +262,7 @@ b8 select_physical_device(vulkan_context* context) {
     if (physical_device_count == 0) {
         BOOBS_FATAL("failed to find physical device which supports vulkan");
 
-        return FALSE;
+        return false;
     }
 
     VkPhysicalDevice physical_devices[physical_device_count];
@@ -279,11 +279,11 @@ b8 select_physical_device(vulkan_context* context) {
         vkGetPhysicalDeviceMemoryProperties(physical_devices[i], &memory);
 
         vulkan_physical_device_requirements requirements = {};
-        requirements.graphics = TRUE;
-        requirements.present = TRUE;
-        requirements.transfer = TRUE;
-        requirements.sampler_anistropy = TRUE;
-        requirements.discrete_gpu = TRUE;
+        requirements.graphics = true;
+        requirements.present = true;
+        requirements.transfer = true;
+        requirements.sampler_anistropy = true;
+        requirements.discrete_gpu = true;
         requirements.device_extension_names = darray_create(const char*);
 
         darray_push(requirements.device_extension_names, &VK_KHR_SWAPCHAIN_EXTENSION_NAME);
@@ -341,12 +341,12 @@ b8 select_physical_device(vulkan_context* context) {
     if (!context->device.physical_device) {
         BOOBS_ERROR("no physical devices which meet the requirements were found");
 
-        return FALSE;
+        return false;
     }
 
     BOOBS_INFO("selected physical device");
 
-    return TRUE;
+    return true;
 }
 
 b8 physical_device_meets_requirements(
@@ -461,7 +461,7 @@ b8 physical_device_meets_requirements(
 
             BOOBS_INFO("required swapchain support not present. skipping");
 
-            return FALSE;
+            return false;
         }
 
         if (requirements->device_extension_names) {
@@ -480,10 +480,10 @@ b8 physical_device_meets_requirements(
 
                 u32 required_extension_count = darray_length(requirements->device_extension_names);
                 for (u32 i = 0; i < required_extension_count; ++i) {
-                    b8 found = FALSE;
+                    b8 found = false;
                     for (u32 j = 0; j < available_extension_count; ++j) {
                         if (strings_equal(requirements->device_extension_names[i], available_extensions[j].extensionName)) {
-                            found = TRUE;
+                            found = true;
 
                             break;
                         }
@@ -497,7 +497,7 @@ b8 physical_device_meets_requirements(
                             MEMORY_TAG_RENDERER
                         );
 
-                        return FALSE;
+                        return false;
                     }
                 }
             }
@@ -508,11 +508,11 @@ b8 physical_device_meets_requirements(
         if (requirements->sampler_anistropy && !features->samplerAnisotropy) {
             BOOBS_INFO("device does not support sampler anistropy. skipping");
 
-            return FALSE;
+            return false;
         }
 
-        return TRUE;
+        return true;
     }
 
-    return FALSE;
+    return false;
 }

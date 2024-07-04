@@ -20,20 +20,20 @@ void vulkan_fence_destroy(vulkan_context* context, vulkan_fence* fence) {
         fence->handle = 0;
     }
 
-    fence->is_signaled = FALSE;
+    fence->is_signaled = false;
 
     BOOBS_DEBUG("destroyed fence");
 }
 
 b8 vulkan_fence_wait(vulkan_context* context, vulkan_fence* fence, u64 timeout_ns) {
     if (!fence->is_signaled) {
-        VkResult result = vkWaitForFences(context->device.logical_device, 1, &fence->handle, TRUE, timeout_ns);
+        VkResult result = vkWaitForFences(context->device.logical_device, 1, &fence->handle, true, timeout_ns);
 
         switch (result) {
             case VK_SUCCESS: {
-                fence->is_signaled = TRUE;
+                fence->is_signaled = true;
 
-                return TRUE;
+                return true;
             } break;
 
             case VK_TIMEOUT: {
@@ -57,16 +57,16 @@ b8 vulkan_fence_wait(vulkan_context* context, vulkan_fence* fence, u64 timeout_n
             } break;
         }
     } else {
-        return TRUE;
+        return true;
     }
 
-    return FALSE;
+    return false;
 }
 
 void vulkan_fence_reset(vulkan_context* context, vulkan_fence* fence) {
     if (fence->is_signaled) {
         VK_CHECK(vkResetFences(context->device.logical_device, 1, &fence->handle));
 
-        fence->is_signaled = FALSE;
+        fence->is_signaled = false;
     }
 }
