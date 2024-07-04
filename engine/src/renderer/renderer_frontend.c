@@ -41,6 +41,14 @@ b8 renderer_end_frame(f32 dt) {
     return result;
 }
 
+void renderer_on_resize(u16 width, u16 height) {
+    if (backend) {
+        backend->resized(backend, width, height);
+    } else {
+        BOOBS_WARN("renderer backend does not exist");
+    }
+}
+
 b8 renderer_draw_frame(render_packet* packet) {
     if (renderer_begin_frame(packet->dt)) {
         b8 result = renderer_end_frame(packet->dt);
