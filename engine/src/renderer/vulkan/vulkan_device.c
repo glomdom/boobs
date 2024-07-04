@@ -365,7 +365,7 @@ b8 physical_device_meets_requirements(
 
     if (requirements->discrete_gpu) {
         if (properties->deviceType == VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU) {
-            BOOBS_INFO("current device is not a discrete GPU. skipping");
+            BOOBS_WARN("current device is not a discrete GPU. skipping");
 
             return FALSE;
         }
