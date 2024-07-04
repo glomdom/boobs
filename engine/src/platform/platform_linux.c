@@ -4,6 +4,7 @@
 
 #include "core/logger.h"
 #include "core/input.h"
+#include "core/event.h"
 
 #include "containers/darray.h"
 
