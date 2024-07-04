@@ -41,7 +41,7 @@ b8 vulkan_device_create(vulkan_context* context) {
         return FALSE;
     }
 
-    BOOBS_INFO("created vulkan physical device")
+    BOOBS_DEBUG("created vulkan physical device")
 
     b8 present_shares_graphics_queue = context->device.graphics_queue_index == context->device.present_queue_index;
     b8 transfer_shares_graphics_queue = context->device.graphics_queue_index == context->device.transfer_queue_index;
@@ -100,7 +100,7 @@ b8 vulkan_device_create(vulkan_context* context) {
     device_create_info.ppEnabledLayerNames = 0;
 
     VK_CHECK(vkCreateDevice(context->device.physical_device, &device_create_info, context->allocator, &context->device.logical_device));
-    BOOBS_INFO("created vulkan logical device");
+    BOOBS_DEBUG("created vulkan logical device");
 
     vkGetDeviceQueue(
         context->device.logical_device,
@@ -130,9 +130,9 @@ b8 vulkan_device_create(vulkan_context* context) {
     pool_create_info.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
 
     VK_CHECK(vkCreateCommandPool(context->device.logical_device, &pool_create_info, context->allocator, &context->device.graphics_command_pool));
-    BOOBS_INFO("created graphics command pool");
+    BOOBS_DEBUG("created graphics command pool");
 
-    BOOBS_INFO("created device");
+    BOOBS_DEBUG("created device");
 
     return TRUE;
 }
@@ -143,17 +143,17 @@ void vulkan_device_destroy(vulkan_context* context) {
     context->device.transfer_queue = 0;
 
     vkDestroyCommandPool(context->device.logical_device, context->device.graphics_command_pool, context->allocator);
-    BOOBS_INFO("destroyed command pool");
+    BOOBS_DEBUG("destroyed command pool");
 
     if (context->device.logical_device) {
         vkDestroyDevice(context->device.logical_device, context->allocator);
 
         context->device.logical_device = 0;
-        BOOBS_INFO("destroyed vulkan logical device");
+        BOOBS_DEBUG("destroyed vulkan logical device");
     }
 
     context->device.physical_device = 0;
-    BOOBS_INFO("destroyed vulkan physical device");
+    BOOBS_DEBUG("destroyed vulkan physical device");
 
     if (context->device.swapchain_support.formats) {
         boobs_free(
@@ -166,7 +166,7 @@ void vulkan_device_destroy(vulkan_context* context) {
         context->device.swapchain_support.format_count = 0;
     }
 
-    BOOBS_INFO("freed formats");
+    BOOBS_DEBUG("freed formats");
 
     if (context->device.swapchain_support.present_modes) {
         boobs_free(
@@ -179,20 +179,20 @@ void vulkan_device_destroy(vulkan_context* context) {
         context->device.swapchain_support.present_mode_count = 0;
     }
 
-    BOOBS_INFO("freed present modes")
+    BOOBS_DEBUG("freed present modes")
 
     boobs_zero_memory(
         &context->device.swapchain_support.capabilities,
         sizeof(context->device.swapchain_support.capabilities)
     );
 
-    BOOBS_INFO("freed capabilities");
+    BOOBS_DEBUG("freed capabilities");
 
     context->device.graphics_queue_index = -1;
     context->device.present_queue_index = -1;
     context->device.transfer_queue_index = -1;
 
-    BOOBS_INFO("reset queue indexes");
+    BOOBS_DEBUG("reset queue indexes");
 }
 
 void vulkan_device_query_swapchain_support(
