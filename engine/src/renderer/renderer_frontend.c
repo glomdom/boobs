@@ -15,12 +15,12 @@ b8 renderer_initialize(const char* application_name, struct platform_state* plat
     if (!backend->initialize(backend, application_name, plat_state)) {
         BOOBS_FATAL("failed to initialize renderer backend");
 
-        return FALSE;
+        return false;
     }
 
     BOOBS_INFO("renderer frontend initialized");
 
-    return TRUE;
+    return true;
 }
 
 void renderer_shutdown() {
@@ -56,9 +56,9 @@ b8 renderer_draw_frame(render_packet* packet) {
         if (!result) {
             BOOBS_ERROR("renderer_end_frame() failed. cannot recover");
 
-            return FALSE;
+            return false;
         }
     }
 
-    return TRUE;
+    return true;
 }

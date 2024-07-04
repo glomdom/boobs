@@ -52,7 +52,7 @@ b8 platform_startup(platform_state* plat_state, const char* application_name, i3
     if (!RegisterClassA(&wc)) {
         MessageBoxA(0, "boobs window registration failed", "Error", MB_ICONEXCLAMATION | MB_OK);
 
-        return FALSE;
+        return false;
     }
 
     u32 client_x = x;
@@ -91,7 +91,7 @@ b8 platform_startup(platform_state* plat_state, const char* application_name, i3
         MessageBoxA(0, "boobs window creation failed", "Error", MB_ICONEXCLAMATION | MB_OK);
         BOOBS_FATAL("window creation failed");
 
-        return FALSE;
+        return false;
     } else {
         state->hwnd = handle;
     }
@@ -107,7 +107,7 @@ b8 platform_startup(platform_state* plat_state, const char* application_name, i3
     clock_frequency = 1.0 / (f64)frequency.QuadPart;
     QueryPerformanceCounter(&start_time);
 
-    return TRUE;
+    return true;
 }
 
 void platform_shutdown(platform_state* plat_state) {
@@ -128,7 +128,7 @@ b8 platform_pump_messages(platform_state* plat_state) {
         DispatchMessageA(&message);
     }
 
-    return TRUE;
+    return true;
 }
 
 void* platform_allocate(u64 size, b8 aligned) {
@@ -225,14 +225,14 @@ b8 platform_create_vulkan_surface(platform_state* plat_state, vulkan_context* co
     if (result != VK_SUCCESS) {
         BOOBS_FATAL("failed to create vulkan surface");
 
-        return FALSE;
+        return false;
     }
 
     context->surface = state->surface;
 
     BOOBS_DEBUG("created surface");
 
-    return TRUE;
+    return true;
 }
 
 LRESULT CALLBACK win32_process_message(HWND hwnd, u32 msg, WPARAM w_param, LPARAM l_param) {
@@ -245,7 +245,7 @@ LRESULT CALLBACK win32_process_message(HWND hwnd, u32 msg, WPARAM w_param, LPARA
             event_context data = {};
             event_fire(EVENT_CODE_APPLICATION_QUIT, 0, data);
 
-            return TRUE;
+            return true;
         }
 
         case WM_DESTROY: {

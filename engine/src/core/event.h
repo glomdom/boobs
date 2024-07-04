@@ -23,7 +23,7 @@ typedef struct event_context {
 } event_context;
 
 /**
- * Must return `TRUE` if the event has been handled.
+ * Must return `true` if the event has been handled.
  */
 typedef b8 (*PFN_on_event)(u16 code, void* sender, void* listener_inst, event_context data);
 

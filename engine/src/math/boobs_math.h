@@ -125,14 +125,14 @@ BOOBS_INLINE vec2 vec2_normalized(vec2 v) {
 
 BOOBS_INLINE b8 vec2_compare(vec2 v0, vec2 v1, f32 tolerance) {
     if (boobs_abs(v0.x - v1.x) > tolerance) {
-        return FALSE;
+        return false;
     }
 
     if (boobs_abs(v0.y - v1.y) > tolerance) {
-        return FALSE;
+        return false;
     }
 
-    return TRUE;
+    return true;
 }
 
 BOOBS_INLINE f32 vec2_distance(vec2 v0, vec2 v1) {
@@ -270,18 +270,18 @@ BOOBS_INLINE vec3 vec3_cross(vec3 v0, vec3 v1) {
 
 BOOBS_INLINE const b8 vec3_compare(vec3 v0, vec3 v1, f32 tolerance) {
     if (boobs_abs(v0.x - v1.x) > tolerance) {
-        return FALSE;
+        return false;
     }
 
     if (boobs_abs(v0.y - v1.y) > tolerance) {
-        return FALSE;
+        return false;
     }
 
     if (boobs_abs(v0.z - v1.z) > tolerance) {
-        return FALSE;
+        return false;
     }
 
-    return TRUE;
+    return true;
 }
 
 BOOBS_INLINE f32 vec3_distance(vec3 v0, vec3 v1) {
