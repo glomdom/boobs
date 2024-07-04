@@ -365,9 +365,15 @@ b8 physical_device_meets_requirements(
 
     if (requirements->discrete_gpu) {
         if (properties->deviceType == VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU) {
-            BOOBS_WARN("current device is not a discrete GPU. skipping");
-
-            return FALSE;
+            BOOBS_WARN("");
+            BOOBS_WARN("");
+            BOOBS_WARN("");
+            BOOBS_WARN("");
+            BOOBS_WARN("integrated gpu detected. not enough testing has been done!");
+            BOOBS_WARN("");
+            BOOBS_WARN("HERE BE DRAGONS");
+            BOOBS_WARN("");
+            BOOBS_WARN("");
         }
     }
 
