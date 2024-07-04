@@ -22,7 +22,7 @@ void vulkan_fence_destroy(vulkan_context* context, vulkan_fence* fence) {
 
     fence->is_signaled = FALSE;
 
-    BOOBS_INFO("destroyed fence");
+    BOOBS_DEBUG("destroyed fence");
 }
 
 b8 vulkan_fence_wait(vulkan_context* context, vulkan_fence* fence, u64 timeout_ns) {

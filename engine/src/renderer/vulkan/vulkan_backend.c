@@ -117,7 +117,7 @@ b8 vulkan_renderer_backend_initialize(renderer_backend* backend, const char* app
     create_info.ppEnabledLayerNames = required_validation_layer_names;
 
     VK_CHECK(vkCreateInstance(&create_info, context.allocator, &context.instance))
-    BOOBS_INFO("created vulkan instance");
+    BOOBS_DEBUG("created vulkan instance");
 
 #   if defined(_DEBUG)
     u32 log_severity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT |
@@ -133,7 +133,7 @@ b8 vulkan_renderer_backend_initialize(renderer_backend* backend, const char* app
     BOOBS_ASSERT_MSG(func, "failed to create debug messenger");
 
     VK_CHECK(func(context.instance, &debug_create_info, context.allocator, &context.debug_messenger));
-    BOOBS_INFO("created vulkan debugger");
+    BOOBS_DEBUG("created vulkan debugger");
 #   endif
 
     if (!platform_create_vulkan_surface(plat_state, &context)) {
@@ -230,7 +230,7 @@ void vulkan_renderer_backend_shutdown(renderer_backend* backend) {
     darray_destroy(context.images_in_flight);
     context.images_in_flight = 0;
 
-    BOOBS_INFO("destroyed fences");
+    BOOBS_DEBUG("destroyed fences");
 
     for (u32 i = 0; i < context.swapchain.image_count; ++i) {
         if (context.graphics_command_buffers[i].handle) {
@@ -244,23 +244,23 @@ void vulkan_renderer_backend_shutdown(renderer_backend* backend) {
         }
     }
 
-    BOOBS_INFO("freed command buffers");
+    BOOBS_DEBUG("freed command buffers");
 
     for (u32 i = 0; i < context.swapchain.image_count; ++i) {
         vulkan_framebuffer_destroy(&context, &context.swapchain.framebuffers[i]);
     }
 
-    BOOBS_INFO("destroyed framebuffers");
+    BOOBS_DEBUG("destroyed framebuffers");
 
     darray_destroy(context.graphics_command_buffers);
     context.graphics_command_buffers = 0;
-    BOOBS_INFO("destroyed command buffers");
+    BOOBS_DEBUG("destroyed command buffers");
 
     vulkan_renderpass_destroy(&context, &context.main_renderpass);
     vulkan_swapchain_destroy(&context, &context.swapchain);
 
     vulkan_device_destroy(&context);
-    BOOBS_INFO("destroyed vulkan device");
+    BOOBS_DEBUG("destroyed vulkan device");
 
     if (context.surface) {
         vkDestroySurfaceKHR(context.instance, context.surface, context.allocator);
@@ -268,17 +268,17 @@ void vulkan_renderer_backend_shutdown(renderer_backend* backend) {
         context.surface = 0;
     }
 
-    BOOBS_INFO("destroyed vulkan surface")
+    BOOBS_DEBUG("destroyed vulkan surface")
 
     if (context.debug_messenger) {
         PFN_vkDestroyDebugUtilsMessengerEXT func = (PFN_vkDestroyDebugUtilsMessengerEXT)vkGetInstanceProcAddr(context.instance, "vkDestroyDebugUtilsMessengerEXT");
         func(context.instance, context.debug_messenger, context.allocator);
 
-        BOOBS_INFO("destroyed vulkan debugger");
+        BOOBS_DEBUG("destroyed vulkan debugger");
     }
 
     vkDestroyInstance(context.instance, context.allocator);
-    BOOBS_INFO("destroyed vulkan instance");
+    BOOBS_DEBUG("destroyed vulkan instance");
 }
 
 void vulkan_renderer_backend_on_resized(renderer_backend* backend, u16 width, u16 height) {
@@ -492,7 +492,7 @@ void create_command_buffers(renderer_backend* backend) {
         );
     }
 
-    BOOBS_INFO("created command buffers");
+    BOOBS_DEBUG("created command buffers");
 }
 
 void regenerate_framebuffers(renderer_backend* backend, vulkan_swapchain* swapchain, vulkan_renderpass* renderpass) {
@@ -516,43 +516,40 @@ void regenerate_framebuffers(renderer_backend* backend, vulkan_swapchain* swapch
 }
 
 b8 recreate_swapchain(renderer_backend* backend) {
-    // If already being recreated, do not try again.
     if (context.recreating_swapchain) {
-        BOOBS_DEBUG("recreate_swapchain called when already recreating. Booting.");
+        BOOBS_WARN("recreate_swapchain() called when already recreating");
+
         return FALSE;
     }
 
-    // Detect if the window is too small to be drawn to
     if (context.framebuffer_width == 0 || context.framebuffer_height == 0) {
-        BOOBS_DEBUG("recreate_swapchain called when window is < 1 in a dimension. Booting.");
+        BOOBS_WARN("recreate_swapchain() called when window is < 1 in a dimension");
+
         return FALSE;
     }
 
-    // Mark as recreating if the dimensions are valid.
     context.recreating_swapchain = TRUE;
 
-    // Wait for any operations to complete.
     vkDeviceWaitIdle(context.device.logical_device);
 
-    // Clear these out just in case.
     for (u32 i = 0; i < context.swapchain.image_count; ++i) {
         context.images_in_flight[i] = 0;
     }
 
-    // Requery support
     vulkan_device_query_swapchain_support(
         context.device.physical_device,
         context.surface,
-        &context.device.swapchain_support);
-    vulkan_device_detect_depth_format(&context.device);
+        &context.device.swapchain_support
+    );
 
+    vulkan_device_detect_depth_format(&context.device);
     vulkan_swapchain_recreate(
         &context,
         cached_framebuffer_width,
         cached_framebuffer_height,
-        &context.swapchain);
+        &context.swapchain
+    );
 
-    // Sync the framebuffer size with the cached sizes.
     context.framebuffer_width = cached_framebuffer_width;
     context.framebuffer_height = cached_framebuffer_height;
     context.main_renderpass.w = context.framebuffer_width;
@@ -560,15 +557,12 @@ b8 recreate_swapchain(renderer_backend* backend) {
     cached_framebuffer_width = 0;
     cached_framebuffer_height = 0;
 
-    // Update framebuffer size generation.
     context.framebuffer_size_last_generation = context.framebuffer_size_generation;
 
-    // cleanup swapchain
     for (u32 i = 0; i < context.swapchain.image_count; ++i) {
         vulkan_command_buffer_free(&context, context.device.graphics_command_pool, &context.graphics_command_buffers[i]);
     }
 
-    // Framebuffers.
     for (u32 i = 0; i < context.swapchain.image_count; ++i) {
         vulkan_framebuffer_destroy(&context, &context.swapchain.framebuffers[i]);
     }
@@ -579,10 +573,8 @@ b8 recreate_swapchain(renderer_backend* backend) {
     context.main_renderpass.h = context.framebuffer_height;
 
     regenerate_framebuffers(backend, &context.swapchain, &context.main_renderpass);
-
     create_command_buffers(backend);
 
-    // Clear the recreating flag.
     context.recreating_swapchain = FALSE;
 
     return TRUE;
