@@ -7,7 +7,7 @@ bad game engine
 1. `git clone https://github.com/glomdom/boobs`
 1. `cd boobs`
 1. `mkdir build && cd build`
-1. `C=clang CXX=clang++ cmake ..`
+1. `CC=clang CXX=clang++ cmake ..`
 1. `cmake --build .`
 
 ## running
