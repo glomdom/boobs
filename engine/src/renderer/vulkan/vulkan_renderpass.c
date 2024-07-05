@@ -26,8 +26,8 @@ void vulkan_renderpass_create(
     VkSubpassDescription subpass = {};
     subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
 
-    u32 attachment_description_count = 2;
-    VkAttachmentDescription attachment_descriptions[attachment_description_count];
+    #define ATTACHMENT_DESCRIPTION_COUNT 2
+    VkAttachmentDescription attachment_descriptions[ATTACHMENT_DESCRIPTION_COUNT];
 
     VkAttachmentDescription color_attachment;
     color_attachment.format = context->swapchain.image_format.format;
@@ -85,7 +85,7 @@ void vulkan_renderpass_create(
     dependency.dependencyFlags = 0;
 
     VkRenderPassCreateInfo render_pass_create_info = { VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO };
-    render_pass_create_info.attachmentCount = attachment_description_count;
+    render_pass_create_info.attachmentCount = ATTACHMENT_DESCRIPTION_COUNT;
     render_pass_create_info.pAttachments = attachment_descriptions;
     render_pass_create_info.subpassCount = 1;
     render_pass_create_info.pSubpasses = &subpass;

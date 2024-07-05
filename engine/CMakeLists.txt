@@ -23,7 +23,6 @@ add_library(engine SHARED
     src/renderer/vulkan/vulkan_utils.c
 )
 
-
 set_target_properties(engine PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
 )
@@ -47,7 +46,7 @@ set(SHADER_OUTPUT_DIRECTORY
 if(WIN32)
     target_include_directories(engine PRIVATE $ENV{VULKAN_SDK}/Include)
     target_link_libraries(engine PRIVATE $ENV{VULKAN_SDK}/Lib/vulkan-1.lib)
-    
+
     # add_custom_command(TARGET engine POST_BUILD
     #     COMMAND ${CMAKE_COMMAND} -E make_directory ${SHADER_OUTPUT_DIRECTORY}
     #     COMMAND $ENV{VULKAN_SDK}/Bin/glslc.exe -fshader-stage=vert ${SHADER_SOURCE_DIRECTORY}/Builtin.ObjectShader.vert.glsl -o ${SHADER_OUTPUT_DIRECTORY}/Builtin.ObjectShader.vert.spv
@@ -72,4 +71,5 @@ else()
     #     COMMENT "Copy assets to same directory as engine output")
 endif()
 
+target_compile_options(engine PRIVATE -Werror=vla -fdeclspec)
 target_compile_definitions(engine PRIVATE BOOBS_EXPORT _CRT_SECURE_NO_WARNINGS)
