@@ -47,6 +47,24 @@ void input_update(f64 dt) {
 }
 
 void input_process_key(keys key, b8 pressed) {
+    if (key == KEY_LALT) {
+        BOOBS_DEBUG("left alt pressed");
+    } else if (key == KEY_RALT) {
+        BOOBS_DEBUG("right alt pressed");
+    }
+
+    if (key == KEY_LCONTROL) {
+        BOOBS_DEBUG("left control pressed");
+    } else if (key == KEY_RCONTROL) {
+        BOOBS_DEBUG("right control pressed");
+    }
+
+    if (key == KEY_LSHIFT) {
+        BOOBS_DEBUG("left shift pressed");
+    } else if (key == KEY_RSHIFT) {
+        BOOBS_DEBUG("right shift pressed");
+    }
+
     if (state.keyboard_current.keys[key] != pressed) {
         state.keyboard_current.keys[key] = pressed;
 
