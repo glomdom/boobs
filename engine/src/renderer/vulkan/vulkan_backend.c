@@ -35,7 +35,7 @@ void create_command_buffers(renderer_backend* backend);
 void regenerate_framebuffers(renderer_backend* backend, vulkan_swapchain* swapchain, vulkan_renderpass* renderpass);
 b8 recreate_swapchain(renderer_backend* backend);
 
-b8 vulkan_renderer_backend_initialize(renderer_backend* backend, const char* application_name, struct platform_state* plat_state) {
+b8 vulkan_renderer_backend_initialize(renderer_backend* backend, const char* application_name) {
     context.find_memory_index = find_memory_index;
 
     // todo: custom allocator, use driver defaults atm
@@ -136,7 +136,7 @@ b8 vulkan_renderer_backend_initialize(renderer_backend* backend, const char* app
     BOOBS_DEBUG("created vulkan debugger");
 #   endif
 
-    if (!platform_create_vulkan_surface(plat_state, &context)) {
+    if (!platform_create_vulkan_surface(&context)) {
         BOOBS_ERROR("failed to create vulkan surface");
 
         return false;

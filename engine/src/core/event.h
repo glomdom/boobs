@@ -27,8 +27,8 @@ typedef struct event_context {
  */
 typedef b8 (*PFN_on_event)(u16 code, void* sender, void* listener_inst, event_context data);
 
-b8 event_initialize();
-void event_shutdown();
+void event_system_initialize(u64* memory_requirement, void* state);
+void event_system_shutdown(void* state);
 
 BOOBS_API b8 event_register(u16 code, void* listener, PFN_on_event on_event);
 BOOBS_API b8 event_unregister(u16 code, void* listener, PFN_on_event on_event);

@@ -8,6 +8,7 @@ add_library(engine SHARED
     src/core/input.c
     src/core/logger.c
     src/math/boobs_math.c
+    src/memory/linear_allocator.c
     src/platform/platform_linux.c
     src/platform/platform_win32.c
     src/renderer/renderer_backend.c
