@@ -11,4 +11,5 @@ typedef struct game {
     void (*on_resize)(struct game* game_inst, u32 width, u32 height);
 
     void* state;
+    void* application_state;
 } game;

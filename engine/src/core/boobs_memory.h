@@ -5,6 +5,7 @@
 typedef enum memory_tag {
     MEMORY_TAG_UNKNOWN,
     MEMORY_TAG_ARRAY,
+    MEMORY_TAG_LINEAR_ALLOCATOR,
     MEMORY_TAG_DARRAY,
     MEMORY_TAG_DICT,
     MEMORY_TAG_RING_QUEUE,
@@ -24,8 +25,8 @@ typedef enum memory_tag {
     MEMORY_TAG_MAX_TAGS
 } memory_tag;
 
-BOOBS_API void initialize_memory();
-BOOBS_API void shutdown_memory();
+BOOBS_API void memory_system_initialize(u64* memory_requirement, void* state);
+BOOBS_API void memory_system_shutdown(void* state);
 
 BOOBS_API void* boobs_allocate(u64 size, memory_tag tag);
 BOOBS_API void boobs_free(void* block, u64 size, memory_tag tag);
@@ -34,3 +35,5 @@ BOOBS_API void* boobs_copy_memory(void* dest, const void* src, u64 size);
 BOOBS_API void* boobs_set_memory(void* dest, i32 value, u64 size);
 
 BOOBS_API char* get_memory_usage_str();
+
+BOOBS_API u64 get_memory_alloc_count();
