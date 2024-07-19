@@ -18,3 +18,4 @@ endif()
 
 add_subdirectory(engine)
 add_subdirectory(testbed)
+add_subdirectory(tests)
